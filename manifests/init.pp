@@ -58,6 +58,10 @@
 #   or add options without having to recreate the entire hash. Defaults to
 #   false, but will default to true in future releases.
 #
+# @param install_options
+#   Array of arguments passed to the installer
+#   Default: []
+#
 # @param restart_command
 #   Command to use when restarting the on config changes.
 #    Passed directly as the <code>'restart'</code> parameter to the service resource.
@@ -137,6 +141,7 @@ class haproxy (
   Hash                                          $defaults_options     = $haproxy::params::defaults_options,
   Boolean                                       $merge_options        = $haproxy::params::merge_options,
   Haproxy::Programs                             $programs             = {},
+  Optional[Array[String]]                       $install_options      = undef,
   Optional[String]                              $restart_command      = undef,
   Optional[String]                              $custom_fragment      = undef,
   Stdlib::Absolutepath                          $config_dir           = $haproxy::params::config_dir,
@@ -179,6 +184,7 @@ class haproxy (
   haproxy::instance { $title:
     package_ensure      => $_package_ensure,
     package_name        => $package_name,
+    install_options     => $install_options,
     service_ensure      => $_service_ensure,
     service_manage      => $_service_manage,
     service_name        => $service_name,
